@@ -3,12 +3,9 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonBackButton,
-  IonButtons,
   IonContent,
-  IonHeader,
   IonIcon,
   IonProgressBar,
-  IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { shieldOutline, trendingUpOutline } from 'ionicons/icons';
@@ -33,12 +30,9 @@ interface MatchDetailsVm {
   imports: [
     CommonModule,
     IonBackButton,
-    IonButtons,
     IonContent,
-    IonHeader,
     IonIcon,
     IonProgressBar,
-    IonToolbar,
   ],
   templateUrl: './match-details.page.html',
   styleUrls: ['./match-details.page.scss'],

@@ -3,99 +3,153 @@
 }
 
 .stats-shell {
-  padding: 16px 14px 90px;
+  padding: calc(env(safe-area-inset-top) + 8px) 14px 94px;
 }
 
-h1 {
+.stats-header {
+align-items: center;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    margin-top: 20px;
+
+  h1 {
+    color: var(--color-text-primary);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    margin: 0;
+  }
+}
+
+.back-button {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-secondary) 58%, transparent);
+  border: none;
+  border-radius: 999px;
   color: var(--color-text-primary);
-  font-size: 37px;
-  margin: 0 0 14px;
+  cursor: pointer;
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+
+  ion-icon {
+    font-size: 19px;
+  }
 }
 
 .stats-grid {
   display: grid;
   gap: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   grid-template-columns: repeat(2, 1fr);
 
-  article {
+  .stat-card {
     background: var(--color-card);
     border: 1px solid color-mix(in srgb, var(--color-primary) 14%, transparent);
     border-radius: 14px;
     display: flex;
     flex-direction: column;
-    min-height: 122px;
-    padding: 12px;
+    min-height: 112px;
+    padding: 12px 14px;
 
     ion-icon {
-      color: var(--color-accent);
-      font-size: 20px;
-      margin-bottom: 12px;
+      font-size: 18px;
+      margin-bottom: 10px;
     }
 
-    strong {
+    .team-value {
       color: var(--color-text-primary);
-      font-size: 36px;
+      font-size: 24px;
       font-weight: 800;
-      line-height: 1.1;
+      line-height: 1.15;
+      margin: 0;
+    }
+
+    .number-value {
+      color: var(--color-text-primary);
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1;
+      margin: 0;
     }
 
     small {
       color: var(--color-text-secondary);
-      font-size: 15px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.4px;
-      margin-top: 4px;
+      letter-spacing: 0.9px;
+      margin-top: 5px;
       text-transform: uppercase;
     }
   }
 }
 
+.accent-warning {
+  color: #ffbf2f;
+}
+
+.accent-success {
+  color: var(--color-success);
+}
+
+.accent-danger {
+  color: var(--color-danger);
+}
+
 .insight-box {
-  background: color-mix(in srgb, var(--color-accent) 13%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--ion-color-success-shade) 16%, transparent),
+    color-mix(in srgb, var(--color-card) 72%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--ion-color-success-shade) 45%, transparent);
   border-radius: 16px;
   margin-top: 16px;
-  padding: 14px;
+  padding: 13px 14px 14px;
 
   header {
     align-items: center;
     color: var(--color-accent);
     display: flex;
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 800;
     gap: 8px;
     margin-bottom: 8px;
 
     ion-icon {
-      font-size: 20px;
+      font-size: 16px;
     }
   }
 
   p {
     color: var(--color-text-primary);
-    font-size: 18px;
-    line-height: 1.4;
+    font-size: 16px;
+    line-height: 1.55;
     margin: 0;
   }
 
   .highlight {
     color: var(--color-success);
-    margin-top: 8px;
+    font-weight: 800;
   }
 }
 
 .history {
-  margin-top: 18px;
+  margin-top: 30px;
 
   h2 {
     color: var(--color-text-secondary);
-    font-size: 24px;
-    letter-spacing: 0.7px;
-    margin: 0 0 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    margin: 0 0 11px;
     text-transform: uppercase;
   }
 
-  article {
+  .history-item {
     align-items: center;
     background: var(--color-card);
     border: 1px solid color-mix(in srgb, var(--color-primary) 14%, transparent);
@@ -103,30 +157,78 @@ h1 {
     display: flex;
     justify-content: space-between;
     margin-bottom: 9px;
-    padding: 12px;
+    padding: 12px 12px;
+
+    .history-copy {
+      min-width: 0;
+      padding-right: 10px;
+    }
 
     strong {
       color: var(--color-text-primary);
       display: block;
-      font-size: 29px;
-      margin-bottom: 4px;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 3px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     small {
       color: var(--color-text-secondary);
-      font-size: 16px;
+      display: block;
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    ion-icon {
-      font-size: 24px;
+    .result-badge {
+      align-items: center;
+      display: inline-flex;
+      flex-shrink: 0;
+      height: 24px;
+      justify-content: center;
+      width: 24px;
+
+      ion-icon {
+        font-size: 24px;
+      }
     }
 
-    ion-icon.win {
-      color: var(--color-success);
+    .result-badge.win {
+      background: var(--color-success);
+      border-radius: 2px;
+
+      ion-icon {
+        color: #ffffff;
+        font-size: 18px;
+      }
     }
 
-    ion-icon.loss {
-      color: var(--color-danger);
+    .result-badge.loss ion-icon {
+      color: #ff4f43;
+      font-size: 26px;
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .stats-shell {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .stats-grid .stat-card {
+    min-height: 106px;
+
+    .team-value {
+      font-size: 22px;
+    }
+
+    .number-value {
+      font-size: 38px;
     }
   }
 }

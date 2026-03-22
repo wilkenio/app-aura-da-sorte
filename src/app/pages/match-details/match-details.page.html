@@ -1,15 +1,17 @@
-<ion-header class="details-header">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/home" (click)="goBack()"></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="details-content" [fullscreen]="true">
   <div class="details-shell" *ngIf="vm$ | async as vm">
     <section class="hero" *ngIf="vm.match; else notFound">
-      <div class="league-pill">{{ vm.match.league }}</div>
+      <div class="hero-top-row">
+        <ion-back-button
+          class="app-circle-back"
+          defaultHref="/tabs/home"
+          text=""
+          mode="md"
+          aria-label="voltar"
+          (click)="goBack()"
+        ></ion-back-button>
+        <div class="app-league-pill">{{ vm.match.league }}</div>
+      </div>
       <p>{{ vm.match.statusLabel || vm.match.startTime }}</p>
 
       <div class="versus">

@@ -1,29 +1,34 @@
 <ion-content class="stats-content" [fullscreen]="true">
   <div class="stats-shell" *ngIf="vm$ | async as vm">
-    <h1>Minhas Estatisticas</h1>
+    <header class="stats-header">
+      <button class="back-button" type="button" aria-label="Voltar" (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </button>
+      <h1>Minhas Estatisticas</h1>
+    </header>
 
     <section class="stats-grid">
-      <article>
-        <ion-icon name="trophy-outline"></ion-icon>
-        <strong>{{ vm.stats.favoriteTeam }}</strong>
+      <article class="stat-card">
+        <ion-icon name="trophy-outline" class="accent-warning"></ion-icon>
+        <strong class="team-value">{{ vm.stats.favoriteTeam }}</strong>
         <small>Time Favorito</small>
       </article>
 
-      <article>
-        <ion-icon name="radio-button-on-outline"></ion-icon>
-        <strong>{{ vm.stats.winRate }}%</strong>
+      <article class="stat-card">
+        <ion-icon name="radio-button-on-outline" class="accent-success"></ion-icon>
+        <strong class="number-value">{{ vm.stats.winRate }}%</strong>
         <small>Taxa de Acerto</small>
       </article>
 
-      <article>
-        <ion-icon name="flame-outline"></ion-icon>
-        <strong>{{ vm.stats.totalBets }}</strong>
+      <article class="stat-card">
+        <ion-icon name="flame-outline" class="accent-danger"></ion-icon>
+        <strong class="number-value">{{ vm.stats.totalBets }}</strong>
         <small>Total Apostas</small>
       </article>
 
-      <article>
-        <ion-icon name="trending-up-outline"></ion-icon>
-        <strong>{{ vm.stats.streak }}</strong>
+      <article class="stat-card">
+        <ion-icon name="trending-up-outline" class="accent-success"></ion-icon>
+        <strong class="number-value">{{ vm.stats.streak }}</strong>
         <small>Sequencia Atual</small>
       </article>
     </section>
@@ -31,21 +36,26 @@
     <section class="insight-box">
       <header>
         <ion-icon name="sparkles-outline"></ion-icon>
-        Insight da IA
+        <span>Insight da IA</span>
       </header>
-      <p>{{ vm.insight }}</p>
-      <p class="highlight">{{ vm.insightHighlight }} de assertividade no seu padrao favorito.</p>
+      <p>
+        {{ vm.insightLead }}
+        <span class="highlight">{{ vm.insightHighlight }}</span>
+        {{ vm.insightTail }}
+      </p>
     </section>
 
     <section class="history">
       <h2>Historico Recente</h2>
 
-      <article *ngFor="let item of vm.history; trackBy: trackByHistoryId">
-        <div>
+      <article class="history-item" *ngFor="let item of vm.history; trackBy: trackByHistoryId">
+        <div class="history-copy">
           <strong>{{ item.fixture }}</strong>
           <small>Aposta: {{ item.betType }} · {{ item.odds | number: '1.2-2' }}</small>
         </div>
-        <ion-icon [name]="item.result === 'win' ? 'checkmark-outline' : 'close-outline'" [class.win]="item.result === 'win'" [class.loss]="item.result === 'loss'"></ion-icon>
+        <span class="result-badge" [class.win]="item.result === 'win'" [class.loss]="item.result === 'loss'">
+          <ion-icon [name]="item.result === 'win' ? 'checkmark-outline' : 'close-outline'"></ion-icon>
+        </span>
       </article>
     </section>
   </div>

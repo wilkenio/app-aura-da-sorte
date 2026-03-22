@@ -49,3 +49,41 @@ ion-content {
 	color: var(--color-text-primary);
 	font-family: 'Sora', sans-serif;
 }
+
+.app-circle-back {
+	--color: var(--color-text-primary);
+	--icon-font-size: 17px;
+	--padding-start: 0;
+	--padding-end: 0;
+	--ripple-color: transparent;
+	display: flex;
+	align-items: center;
+}
+
+.app-circle-back::part(native) {
+	align-items: center;
+	background: color-mix(in srgb, var(--color-card) 70%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-primary) 22%, transparent);
+	border-radius: 999px;
+	display: inline-flex;
+	height: 36px;
+	justify-content: center;
+	min-height: 36px;
+	min-width: 36px;
+	padding: 0;
+	width: 36px;
+}
+
+.app-league-pill {
+	background: color-mix(in srgb, var(--color-secondary) 30%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-primary) 18%, transparent);
+	border-radius: 999px;
+	color: var(--color-text-secondary);
+	display: inline-flex;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.9px;
+	line-height: 1;
+	padding: 8px 12px;
+	text-transform: uppercase;
+}

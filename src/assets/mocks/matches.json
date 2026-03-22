@@ -1,0 +1,72 @@
+{
+  "matches": [
+    {
+      "id": "m1",
+      "homeTeam": "Flamengo",
+      "awayTeam": "Palmeiras",
+      "league": "Brasileirao Serie A",
+      "startTime": "65'",
+      "isLive": true,
+      "score": { "home": 2, "away": 1 },
+      "statusLabel": "2o tempo - 65'"
+    },
+    {
+      "id": "m2",
+      "homeTeam": "Corinthians",
+      "awayTeam": "Sao Paulo",
+      "league": "Brasileirao Serie A",
+      "startTime": "23'",
+      "isLive": true,
+      "score": { "home": 0, "away": 0 },
+      "statusLabel": "1o tempo - 23'"
+    },
+    {
+      "id": "m3",
+      "homeTeam": "Fluminense",
+      "awayTeam": "Botafogo",
+      "league": "Brasileirao Serie A",
+      "startTime": "16:00",
+      "isLive": false
+    },
+    {
+      "id": "m4",
+      "homeTeam": "Atletico-MG",
+      "awayTeam": "Cruzeiro",
+      "league": "Brasileirao Serie A",
+      "startTime": "18:30",
+      "isLive": false
+    },
+    {
+      "id": "m5",
+      "homeTeam": "Internacional",
+      "awayTeam": "Vasco",
+      "league": "Brasileirao Serie A",
+      "startTime": "20:00",
+      "isLive": false
+    },
+    {
+      "id": "m6",
+      "homeTeam": "River Plate",
+      "awayTeam": "Boca Juniors",
+      "league": "Libertadores",
+      "startTime": "21:30",
+      "isLive": false
+    }
+  ],
+  "teams": [
+    { "id": "t1", "name": "Flamengo" },
+    { "id": "t2", "name": "Palmeiras" },
+    { "id": "t3", "name": "Corinthians" },
+    { "id": "t4", "name": "Sao Paulo" },
+    { "id": "t5", "name": "Fluminense" },
+    { "id": "t6", "name": "Botafogo" }
+  ],
+  "odds": [
+    { "matchId": "m1", "home": 2.1, "draw": 3.4, "away": 3.6 },
+    { "matchId": "m2", "home": 2.3, "draw": 3.1, "away": 3.2 },
+    { "matchId": "m3", "home": 2.4, "draw": 3.0, "away": 2.9 },
+    { "matchId": "m4", "home": 2.8, "draw": 2.9, "away": 2.6 },
+    { "matchId": "m5", "home": 1.75, "draw": 3.3, "away": 4.2 },
+    { "matchId": "m6", "home": 2.6, "draw": 2.8, "away": 2.7 }
+  ]
+}

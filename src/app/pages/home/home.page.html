@@ -1,0 +1,64 @@
+<ion-content class="home-content" [fullscreen]="true">
+  <div class="home-shell" *ngIf="vm$ | async as vm">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">A</div>
+        <h1>AuraBet</h1>
+      </div>
+      <ion-button fill="clear" class="login-btn">
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        Entrar
+      </ion-button>
+    </header>
+
+    <section class="leagues-scroll">
+      <button
+        *ngFor="let league of leagues"
+        type="button"
+        [class.active]="vm.selectedLeague === league"
+        (click)="selectLeague(league)"
+      >
+        {{ league }}
+      </button>
+    </section>
+
+    <section class="section-header live">
+      <ion-icon name="flame-outline"></ion-icon>
+      <h2>Ao Vivo</h2>
+    </section>
+
+    <ion-list lines="none" class="cards-list compact-list">
+      <ion-item class="empty-item" *ngIf="!vm.liveMatches.length">
+        <ion-label>Nenhum jogo ao vivo nesta liga.</ion-label>
+      </ion-item>
+      <app-match-card
+        *ngFor="let match of vm.liveMatches; trackBy: trackByMatchId"
+        [match]="match"
+        [compact]="true"
+        (cardClick)="openMatchDetails($event)"
+      ></app-match-card>
+    </ion-list>
+
+    <section class="section-header">
+      <h2>Jogos de Hoje</h2>
+    </section>
+
+    <ion-list lines="none" class="cards-list">
+      <ion-item class="empty-item" *ngIf="!vm.todayMatches.length">
+        <ion-label>Nenhum jogo disponivel para hoje.</ion-label>
+      </ion-item>
+      <app-match-card
+        *ngFor="let match of vm.todayMatches; trackBy: trackByMatchId"
+        [match]="match"
+        (cardClick)="openMatchDetails($event)"
+      ></app-match-card>
+    </ion-list>
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="center" edge="true" class="fab-ia">
+    <ion-fab-button (click)="generateAiTip()">
+      <ion-icon name="sparkles-outline"></ion-icon>
+      <span>Gerar palpite com IA</span>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,91 @@
+<ion-header class="details-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home" (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="details-content" [fullscreen]="true">
+  <div class="details-shell" *ngIf="vm$ | async as vm">
+    <section class="hero" *ngIf="vm.match; else notFound">
+      <div class="league-pill">{{ vm.match.league }}</div>
+      <p>{{ vm.match.statusLabel || vm.match.startTime }}</p>
+
+      <div class="versus">
+        <div class="team">
+          <ion-icon name="shield-outline"></ion-icon>
+          <h2>{{ vm.match.homeTeam }}</h2>
+        </div>
+        <span>VS</span>
+        <div class="team">
+          <ion-icon name="shield-outline"></ion-icon>
+          <h2>{{ vm.match.awayTeam }}</h2>
+        </div>
+      </div>
+    </section>
+
+    <section class="markets">
+      <h3>Resultado Final</h3>
+      <div class="grid odds-main" *ngIf="vm.match">
+        <article>
+          <small>{{ vm.match.homeTeam }}</small>
+          <strong>{{ vm.odds.home | number: '1.2-2' }}</strong>
+        </article>
+        <article>
+          <small>Empate</small>
+          <strong>{{ vm.odds.draw | number: '1.2-2' }}</strong>
+        </article>
+        <article>
+          <small>{{ vm.match.awayTeam }}</small>
+          <strong>{{ vm.odds.away | number: '1.2-2' }}</strong>
+        </article>
+      </div>
+
+      <h3>Mais Mercados</h3>
+      <div class="grid extras">
+        <article>
+          <small>Chance Dupla 1X</small>
+          <strong>{{ vm.markets.doubleChance | number: '1.2-2' }}</strong>
+        </article>
+        <article>
+          <small>Ambas Marcam</small>
+          <strong>{{ vm.markets.bothTeamsScore | number: '1.2-2' }}</strong>
+        </article>
+        <article>
+          <small>Mais de 2.5 gols</small>
+          <strong>{{ vm.markets.over25 | number: '1.2-2' }}</strong>
+        </article>
+        <article>
+          <small>Menos de 2.5 gols</small>
+          <strong>{{ vm.markets.under25 | number: '1.2-2' }}</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="ai-card">
+      <header>
+        <div>
+          <h4>Analise da IA</h4>
+          <small>Baseado em dados recentes</small>
+        </div>
+        <span>{{ vm.aiProbability }}%</span>
+      </header>
+
+      <h5>{{ vm.aiRecommendation }}</h5>
+      <ion-progress-bar [value]="vm.aiProbability / 100"></ion-progress-bar>
+
+      <p>
+        <ion-icon name="trending-up-outline"></ion-icon>
+        {{ vm.aiExplanation }}
+      </p>
+    </section>
+  </div>
+
+  <ng-template #notFound>
+    <div class="empty-state">
+      <h3>Partida nao encontrada</h3>
+      <p>Selecione um jogo na tela inicial para ver os detalhes.</p>
+    </div>
+  </ng-template>
+</ion-content>

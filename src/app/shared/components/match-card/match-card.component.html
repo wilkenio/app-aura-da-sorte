@@ -1,0 +1,28 @@
+<ion-card class="match-card" button="true" (click)="onCardClick()">
+  <ion-card-content>
+    <div class="card-header">
+      <ion-chip>{{ match.league }}</ion-chip>
+      <span class="match-time">{{ match.statusLabel || match.startTime }}</span>
+    </div>
+
+    <div class="teams-row" [class.compact]="compact">
+      <div class="teams">
+        <h3>{{ match.homeTeam }}</h3>
+        <h3>{{ match.awayTeam }}</h3>
+      </div>
+
+      <div class="score" *ngIf="match.score; else arrowOnly">
+        <span>{{ match.score.home }}</span>
+        <span>{{ match.score.away }}</span>
+      </div>
+
+      <ng-template #arrowOnly>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ng-template>
+    </div>
+
+    <div class="ai-bar" *ngIf="showAi">
+      <span>{{ aiText }}</span>
+    </div>
+  </ion-card-content>
+</ion-card>

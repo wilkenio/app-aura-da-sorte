@@ -1,0 +1,7 @@
+{
+  "name": "aurabet",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

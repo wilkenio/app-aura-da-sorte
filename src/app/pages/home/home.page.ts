@@ -13,10 +13,8 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  footballOutline,
   sparklesOutline,
   personOutline,
-  flameOutline,
 } from 'ionicons/icons';
 import { BehaviorSubject, combineLatest, map, shareReplay } from 'rxjs';
 
@@ -28,6 +26,11 @@ interface HomeViewModel {
   selectedLeague: string;
   liveMatches: Match[];
   todayMatches: Match[];
+}
+
+interface LeagueOption {
+  id: string;
+  label: string;
 }
 
 @Component({
@@ -49,9 +52,14 @@ interface HomeViewModel {
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage {
-  readonly leagues = ['Brasileirao Serie A', 'Serie B', 'Libertadores', 'Champions League'];
+  readonly leagues: LeagueOption[] = [
+    { id: 'Brasileirao Serie A', label: 'BR Brasileirão A' },
+    { id: 'Serie B', label: 'BR Série B' },
+    { id: 'Libertadores', label: '🏆 Libertadores' },
+    { id: 'Champions League', label: '⭐ Champions' },
+  ];
 
-  private readonly selectedLeagueSubject = new BehaviorSubject<string>(this.leagues[0]);
+  private readonly selectedLeagueSubject = new BehaviorSubject<string>(this.leagues[0].id);
   readonly selectedLeague$ = this.selectedLeagueSubject.asObservable();
 
   private readonly liveMatches$ = this.betsApiService.getLiveMatches().pipe(shareReplay(1));
@@ -69,7 +77,7 @@ export class HomePage {
     private readonly betsApiService: BetsApiService,
     private readonly router: Router,
   ) {
-    addIcons({ footballOutline, sparklesOutline, personOutline, flameOutline });
+    addIcons({ sparklesOutline, personOutline });
   }
 
   selectLeague(league: string): void {
@@ -89,10 +97,15 @@ export class HomePage {
   }
 
   private filterByLeague(matches: Match[], league: string): Match[] {
-    if (league === 'Brasileirao Serie A') {
-      return matches;
-    }
+    const normalizedLeague = this.normalizeText(league);
 
-    return matches.filter((match) => match.league.toLowerCase().includes(league.toLowerCase()));
+    return matches.filter((match) => this.normalizeText(match.league).includes(normalizedLeague));
+  }
+
+  private normalizeText(value: string): string {
+    return value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
   }
 }

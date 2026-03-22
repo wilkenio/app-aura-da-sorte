@@ -2,7 +2,7 @@
   <div class="home-shell" *ngIf="vm$ | async as vm">
     <header class="app-header">
       <div class="brand">
-        <div class="brand-icon">A</div>
+        <div class="brand-icon"><img src="assets/images/logo-AuraBet.png" alt="AuraBet Logo"></div>
         <h1>AuraBet</h1>
       </div>
       <ion-button fill="clear" class="login-btn">
@@ -15,31 +15,38 @@
       <button
         *ngFor="let league of leagues"
         type="button"
-        [class.active]="vm.selectedLeague === league"
-        (click)="selectLeague(league)"
+        [class.active]="vm.selectedLeague === league.id"
+        (click)="selectLeague(league.id)"
       >
-        {{ league }}
+        {{ league.label }}
       </button>
     </section>
 
     <section class="section-header live">
-      <ion-icon name="flame-outline"></ion-icon>
+      <span class="live-dot" aria-hidden="true"></span>
       <h2>Ao Vivo</h2>
     </section>
 
-    <ion-list lines="none" class="cards-list compact-list">
-      <ion-item class="empty-item" *ngIf="!vm.liveMatches.length">
-        <ion-label>Nenhum jogo ao vivo nesta liga.</ion-label>
-      </ion-item>
+    <div class="live-cards-scroll" *ngIf="vm.liveMatches.length; else emptyLiveState">
       <app-match-card
         *ngFor="let match of vm.liveMatches; trackBy: trackByMatchId"
+        class="live-card-item"
         [match]="match"
         [compact]="true"
+        [showAi]="false"
         (cardClick)="openMatchDetails($event)"
       ></app-match-card>
-    </ion-list>
+    </div>
 
-    <section class="section-header">
+    <ng-template #emptyLiveState>
+      <ion-list lines="none" class="cards-list compact-list">
+        <ion-item class="empty-item">
+          <ion-label>Nenhum jogo ao vivo nesta liga.</ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-template>
+
+    <section class="section-header today">
       <h2>Jogos de Hoje</h2>
     </section>
 

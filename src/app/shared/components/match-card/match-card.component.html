@@ -1,8 +1,17 @@
-<ion-card class="match-card" button="true" (click)="onCardClick()">
+<ion-card
+  class="match-card"
+  [class.match-card-compact]="compact"
+  [class.match-card-live]="compact && match.isLive"
+  button="true"
+  (click)="onCardClick()"
+>
   <ion-card-content>
     <div class="card-header">
-      <ion-chip>{{ match.league }}</ion-chip>
-      <span class="match-time">{{ match.statusLabel || match.startTime }}</span>
+      <span class="league-chip">{{ match.league }}</span>
+      <span class="match-time" [class.live-time]="compact && match.isLive">
+        <span class="live-time-dot" *ngIf="compact && match.isLive" aria-hidden="true"></span>
+        {{ match.statusLabel || match.startTime }}
+      </span>
     </div>
 
     <div class="teams-row" [class.compact]="compact">

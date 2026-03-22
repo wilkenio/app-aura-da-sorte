@@ -10,58 +10,90 @@
   margin: 0;
 }
 
+.match-card-compact {
+  border-radius: 14px;
+}
+
+.match-card-live {
+  min-height: 148px;
+  display: flex;
+}
+
 .card-header {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
-ion-chip {
-  --background: color-mix(in srgb, var(--color-secondary) 24%, transparent);
-  --color: var(--color-text-secondary);
-  font-size: 11px;
+.league-chip {
+  background: color-mix(in srgb, var(--color-secondary) 24%, transparent);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  font-size: 9px;
   font-weight: 700;
-  height: 22px;
+  line-height: 1;
   letter-spacing: 0.6px;
+  // padding: 5px 10px;
   text-transform: uppercase;
 }
 
 .match-time {
+  align-items: center;
   color: var(--color-text-secondary);
+  display: inline-flex;
   font-size: 13px;
+  gap: 5px;
   font-weight: 700;
+}
+
+.live-time {
+  color: var(--color-danger);
+  font-size: 12px;
+}
+
+.live-time-dot {
+  background: var(--color-danger);
+  border-radius: 999px;
+  display: inline-block;
+  height: 6px;
+  width: 6px;
 }
 
 .teams-row {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .teams {
   h3 {
     color: var(--color-text-primary);
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.25;
     margin: 0;
   }
 }
 
 .teams-row.compact .teams h3 {
-  font-size: 31px;
+  font-size: 19px;
 }
 
 .score {
   color: var(--color-success);
   display: flex;
   flex-direction: column;
-  font-size: 34px;
+  font-size: 31px;
   font-weight: 800;
   line-height: 1;
   text-align: right;
+}
+
+.match-card-live .score {
+  font-size: 25px;
 }
 
 ion-icon {
@@ -76,4 +108,23 @@ ion-icon {
   font-size: 13px;
   font-weight: 700;
   padding: 10px 12px;
+}
+
+@media (max-width: 1000px) {
+  .teams h3 {
+    font-size: 15px;
+  }
+
+  .teams-row.compact .teams h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 5px;
+  }
+
+  .score {
+    font-size: 28px;
+  }
+  .score span{
+    margin-top: 5px;
+  }
 }

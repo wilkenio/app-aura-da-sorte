@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonCard, IonCardContent, IonChip, IonIcon } from '@ionic/angular/standalone';
+import { IonCard, IonCardContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronForwardOutline } from 'ionicons/icons';
 
@@ -9,7 +9,7 @@ import { Match } from '../../../core/models/match.model';
 @Component({
   selector: 'app-match-card',
   standalone: true,
-  imports: [CommonModule, IonCard, IonCardContent, IonChip, IonIcon],
+  imports: [CommonModule, IonCard, IonCardContent, IonIcon],
   templateUrl: './match-card.component.html',
   styleUrls: ['./match-card.component.scss'],
 })

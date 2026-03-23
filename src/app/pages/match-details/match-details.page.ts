@@ -16,7 +16,7 @@ import { ExtraMarkets, Odds } from '../../core/models/odds.model';
 import { BetsApiService } from '../../core/services/bets-api.service';
 
 interface MatchDetailsVm {
-  match?: Match;
+  event?: any; // BetsApiEventDetail
   odds: Odds;
   markets: ExtraMarkets;
   aiProbability: number;
@@ -40,8 +40,8 @@ interface MatchDetailsVm {
 export class MatchDetailsPage {
   readonly vm$ = this.route.paramMap.pipe(
     map((params) => params.get('id') ?? ''),
-    switchMap((id) => this.betsApiService.getMatchById(id)),
-    map((match) => this.toViewModel(match)),
+    switchMap((id) => this.betsApiService.getEventDetails(id)),
+    map((event) => this.toViewModel(event)),
   );
 
   constructor(
@@ -56,12 +56,13 @@ export class MatchDetailsPage {
     this.router.navigate(['/tabs/home']);
   }
 
-  private toViewModel(match?: Match): MatchDetailsVm {
-    const odds = match?.odds ?? { home: 2.1, draw: 3.2, away: 3.1 };
+  private toViewModel(event?: any): MatchDetailsVm {
+    // For now, use mock odds since event details don't include odds
+    const odds = { home: 2.1, draw: 3.2, away: 3.1 };
     const bothTeamsScore = Number((1.55 + (odds.draw - 2.7) * 0.2).toFixed(2));
 
     return {
-      match,
+      event,
       odds,
       markets: {
         doubleChance: Number((Math.min(1.45, odds.home - 0.75)).toFixed(2)),
@@ -69,11 +70,9 @@ export class MatchDetailsPage {
         over25: Number((1.95 + (odds.home - 2) * 0.1).toFixed(2)),
         under25: Number((1.7 + (odds.away - 3) * -0.08).toFixed(2)),
       },
-      aiProbability: match?.aiInsight?.probability ?? 65,
-      aiRecommendation: match?.aiInsight?.recommendation ?? match?.homeTeam ?? 'Mandante',
-      aiExplanation:
-        match?.aiInsight?.explanation ??
-        'Analise indica maior consistencia do favorito em jogos recentes e bom rendimento no confronto direto.',
+      aiProbability: 65,
+      aiRecommendation: event?.home?.name ?? 'Mandante',
+      aiExplanation: 'Analise indica maior consistencia do favorito em jogos recentes e bom rendimento no confronto direto.',
     };
   }
 }

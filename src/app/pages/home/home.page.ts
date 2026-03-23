@@ -52,25 +52,28 @@ interface LeagueOption {
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage {
-  readonly leagues: LeagueOption[] = [
-    { id: 'Brasileirao Serie A', label: 'BR Brasileirão A' },
-    { id: 'Serie B', label: 'BR Série B' },
-    { id: 'Libertadores', label: '🏆 Libertadores' },
-    { id: 'Champions League', label: '⭐ Champions' },
-  ];
-
-  private readonly selectedLeagueSubject = new BehaviorSubject<string>(this.leagues[0].id);
+  private readonly selectedLeagueSubject = new BehaviorSubject<string>('All');
   readonly selectedLeague$ = this.selectedLeagueSubject.asObservable();
 
   private readonly liveMatches$ = this.betsApiService.getLiveMatches().pipe(shareReplay(1));
   private readonly todayMatches$ = this.betsApiService.getTodayMatches().pipe(shareReplay(1));
 
   readonly vm$ = combineLatest([this.selectedLeague$, this.liveMatches$, this.todayMatches$]).pipe(
-    map(([selectedLeague, liveMatches, todayMatches]) => ({
-      selectedLeague,
-      liveMatches: this.filterByLeague(liveMatches, selectedLeague),
-      todayMatches: this.filterByLeague(todayMatches, selectedLeague),
-    })),
+    map(([selectedLeague, liveMatches, todayMatches]) => {
+      const allMatches = [...liveMatches, ...todayMatches];
+      const leagueSet = new Set(allMatches.map(match => match.league));
+      const leagues: LeagueOption[] = [
+        { id: 'All', label: 'Todos' },
+        ...Array.from(leagueSet).map(league => ({ id: league, label: league })),
+      ];
+
+      return {
+        leagues,
+        selectedLeague,
+        liveMatches: this.filterByLeague(liveMatches, selectedLeague),
+        todayMatches: this.filterByLeague(todayMatches, selectedLeague),
+      };
+    }),
   );
 
   constructor(
@@ -97,6 +100,10 @@ export class HomePage {
   }
 
   private filterByLeague(matches: Match[], league: string): Match[] {
+    if (league === 'All') {
+      return matches;
+    }
+
     const normalizedLeague = this.normalizeText(league);
 
     return matches.filter((match) => this.normalizeText(match.league).includes(normalizedLeague));

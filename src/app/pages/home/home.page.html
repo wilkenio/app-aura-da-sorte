@@ -13,7 +13,7 @@
 
     <section class="leagues-scroll">
       <button
-        *ngFor="let league of leagues"
+        *ngFor="let league of vm.leagues"
         type="button"
         [class.active]="vm.selectedLeague === league.id"
         (click)="selectLeague(league.id)"

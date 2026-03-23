@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  useMockData: true,
-  betsApiBaseUrl: 'https://api.b365api.com',
-  betsApiToken: 'YOUR_BETS_API_TOKEN',
+  useMockData: false, // Mude para false para usar a API real
+  betsApiBaseUrl: '/api',
+  betsApiToken: '248558-x464EYT2kttm4b', // Seu token da API
 };
 
 /*

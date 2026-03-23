@@ -1,6 +1,6 @@
 <ion-content class="details-content" [fullscreen]="true">
   <div class="details-shell" *ngIf="vm$ | async as vm">
-    <section class="hero" *ngIf="vm.match; else notFound">
+    <section class="hero" *ngIf="vm.event; else notFound">
       <div class="hero-top-row">
         <ion-back-button
           class="app-circle-back"
@@ -10,28 +10,28 @@
           aria-label="voltar"
           (click)="goBack()"
         ></ion-back-button>
-        <div class="app-league-pill">{{ vm.match.league }}</div>
+        <div class="app-league-pill">{{ vm.event.league?.name }}</div>
       </div>
-      <p>{{ vm.match.statusLabel || vm.match.startTime }}</p>
+      <p>{{ vm.event.time }}</p>
 
       <div class="versus">
         <div class="team">
           <ion-icon name="shield-outline"></ion-icon>
-          <h2>{{ vm.match.homeTeam }}</h2>
+          <h2>{{ vm.event.home?.name }}</h2>
         </div>
         <span>VS</span>
         <div class="team">
           <ion-icon name="shield-outline"></ion-icon>
-          <h2>{{ vm.match.awayTeam }}</h2>
+          <h2>{{ vm.event.away?.name }}</h2>
         </div>
       </div>
     </section>
 
     <section class="markets">
       <h3>Resultado Final</h3>
-      <div class="grid odds-main" *ngIf="vm.match">
+      <div class="grid odds-main" *ngIf="vm.event">
         <article>
-          <small>{{ vm.match.homeTeam }}</small>
+          <small>{{ vm.event.home?.name }}</small>
           <strong>{{ vm.odds.home | number: '1.2-2' }}</strong>
         </article>
         <article>
@@ -39,7 +39,7 @@
           <strong>{{ vm.odds.draw | number: '1.2-2' }}</strong>
         </article>
         <article>
-          <small>{{ vm.match.awayTeam }}</small>
+          <small>{{ vm.event.away?.name }}</small>
           <strong>{{ vm.odds.away | number: '1.2-2' }}</strong>
         </article>
       </div>

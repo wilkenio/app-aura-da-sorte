@@ -11,18 +11,43 @@ import { AiService } from './ai.service';
 interface BetsApiEvent {
   id?: string | number;
   time?: string | number;
-  league?: { name?: string };
+  league?: { id?: string; name?: string; cc?: string };
   league_name?: string;
-  home?: { name?: string };
-  away?: { name?: string };
+  home?: { name?: string; id?: string; image_id?: string; cc?: string };
+  away?: { name?: string; id?: string; image_id?: string; cc?: string };
   home_name?: string;
   away_name?: string;
   ss?: string;
-  timer?: { tm?: number; ts?: number; tt?: string };
+  timer?: { tm?: number; ts?: number; tt?: string; ta?: number; md?: number };
+  scores?: { [key: string]: { home: string; away: string } };
+  bet365_id?: string;
+  stats?: { [key: string]: string[] };
+  o_home?: { id?: string; name?: string; image_id?: string; cc?: string };
 }
 
 interface BetsApiResponse {
   results?: BetsApiEvent[];
+}
+
+interface BetsApiEventViewResponse {
+  success: number;
+  results: BetsApiEventDetail[];
+}
+
+interface BetsApiEventDetail extends BetsApiEvent {
+  sport_id?: string;
+  time_status?: string;
+  ss?: string;
+  timer?: { tm?: number; ts?: number; tt?: string; ta?: number; md?: number };
+  scores?: { [key: string]: { home: string; away: string } };
+  stats?: { [key: string]: string[] };
+  extra?: { length?: number; numberofperiods?: string; periodlength?: string };
+  events?: { id: string; text: string }[];
+  has_lineup?: number;
+  inplay_created_at?: string;
+  inplay_updated_at?: string;
+  confirmed_at?: string;
+  bet365_id?: string;
 }
 
 interface MockDataResponse {
@@ -48,7 +73,7 @@ export class BetsApiService {
       return this.loadMockMatches().pipe(map((matches) => matches.filter((match) => match.isLive)));
     }
 
-    const url = `${this.apiBaseUrl}/v1/events/inplay`;
+    const url = `${this.apiBaseUrl}/v3/events/inplay`;
     const params = {
       token: environment.betsApiToken,
       sport_id: 1,
@@ -66,7 +91,7 @@ export class BetsApiService {
       return this.loadMockMatches().pipe(map((matches) => matches.filter((match) => !match.isLive)));
     }
 
-    const url = `${this.apiBaseUrl}/v1/events/upcoming`;
+    const url = `${this.apiBaseUrl}/v3/events/upcoming`;
     const params = {
       token: environment.betsApiToken,
       sport_id: 1,
@@ -82,6 +107,15 @@ export class BetsApiService {
 
   getMatchById(matchId: string): Observable<Match | undefined> {
     return this.loadMockMatches().pipe(map((matches) => matches.find((match) => match.id === matchId)));
+  }
+
+  getEventDetails(eventId: string): Observable<BetsApiEventDetail | undefined> {
+    const url = `${environment.betsApiBaseUrl}/event/view`;
+    const params = { token: environment.betsApiToken, event_id: eventId };
+    return this.apiService.get<BetsApiEventViewResponse>(url, params).pipe(
+      map((response) => response.results?.[0]),
+      catchError(() => of(undefined)),
+    );
   }
 
   private loadMockMatches(): Observable<Match[]> {
@@ -105,7 +139,9 @@ export class BetsApiService {
   }
 
   private mapBetsApiMatches(events: BetsApiEvent[], isLive: boolean): Match[] {
-    return events.map((event) => {
+    return events
+      .filter((event) => event.league?.cc !== null) // Filtrar apenas jogos reais (cc não nulo)
+      .map((event) => {
       const score = this.extractScore(event.ss);
 
       return {

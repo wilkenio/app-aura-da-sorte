@@ -29,6 +29,48 @@ interface BetsApiResponse {
   results?: BetsApiEvent[];
 }
 
+interface AuraMatchAnalysis {
+  status: string;
+  match_id: string;
+  momentum: {
+    equipe_dominante: string;
+    texto: string;
+    valor: number;
+  };
+  estatisticas_ao_vivo: {
+    posse_casa: number;
+    posse_fora: number;
+    gols_casa: number;
+    gols_fora: number;
+    ataque_casa: number;
+    ataque_fora: number;
+  };
+  proximos_minutos: {
+    gol_prox_10_min: number;
+    escanteio_prox_5_min: number;
+    cartao_amarelo_prox_10_min: number;
+    substituicao_prox_5_min: number;
+    falta_perigosa_prox_5_min: number;
+    chute_gol_prox_3_min: number;
+  };
+  resultado_final: {
+    vencedor_casa_prob: number;
+    vencedor_fora_prob: number;
+    empate_prob: number;
+    ambos_marcam_prob: number;
+    mais_gols_linha: number;
+    mais_gols_prob: number;
+  };
+  narrativa_llm: string;
+  signals: {
+    x: number;
+    y: number;
+    ataques_perigosos_casa: number;
+    escanteios_total: number;
+  };
+  timestamp: string;
+}
+
 interface BetsApiEventViewResponse {
   success: number;
   results: BetsApiEventDetail[];
@@ -61,6 +103,7 @@ interface MockDataResponse {
 })
 export class BetsApiService {
   private readonly apiBaseUrl = environment.betsApiBaseUrl;
+  private readonly auraBaseUrl = environment.auraApiBaseUrl;
 
   constructor(
     private readonly apiService: ApiService,
@@ -70,38 +113,36 @@ export class BetsApiService {
 
   getLiveMatches(): Observable<Match[]> {
     if (environment.useMockData) {
-      return this.loadMockMatches().pipe(map((matches) => matches.filter((match) => match.isLive)));
+      return this.loadMockMatches().pipe(map((matches: Match[]) => matches.filter((match: Match) => match.isLive)));
     }
 
-    const url = `${this.apiBaseUrl}/v3/events/inplay`;
-    const params = {
-      token: environment.betsApiToken,
-      sport_id: 1,
-    };
+    const url = `${this.auraBaseUrl}/matches/inplay`;
 
-    return this.apiService.get<BetsApiResponse>(url, params).pipe(
-      map((response) => this.mapBetsApiMatches(response.results ?? [], true)),
-      switchMap((matches) => this.attachPredictions(matches)),
-      catchError(() => this.loadMockMatches().pipe(map((matches) => matches.filter((match) => match.isLive)))),
+    return this.apiService.get<BetsApiResponse>(url).pipe(
+      map((response: BetsApiResponse) => this.mapBetsApiMatches(response.results ?? [], true)),
+      switchMap((matches: Match[]) => this.attachPredictions(matches)),
+      catchError(() => this.loadMockMatches().pipe(map((matches: Match[]) => matches.filter((match: Match) => match.isLive)))),
     );
   }
 
   getTodayMatches(): Observable<Match[]> {
     if (environment.useMockData) {
-      return this.loadMockMatches().pipe(map((matches) => matches.filter((match) => !match.isLive)));
+      return this.loadMockMatches().pipe(map((matches: Match[]) => matches.filter((match: Match) => !match.isLive)));
     }
 
-    const url = `${this.apiBaseUrl}/v3/events/upcoming`;
-    const params = {
-      token: environment.betsApiToken,
-      sport_id: 1,
-      day: 'today',
-    };
+    const url = `${this.auraBaseUrl}/matches/upcoming`;
 
-    return this.apiService.get<BetsApiResponse>(url, params).pipe(
-      map((response) => this.mapBetsApiMatches(response.results ?? [], false)),
-      switchMap((matches) => this.attachPredictions(matches)),
-      catchError(() => this.loadMockMatches().pipe(map((matches) => matches.filter((match) => !match.isLive)))),
+    return this.apiService.get<BetsApiResponse>(url).pipe(
+      map((response: BetsApiResponse) => this.mapBetsApiMatches(response.results ?? [], false)),
+      switchMap((matches: Match[]) => this.attachPredictions(matches)),
+      catchError(() => this.loadMockMatches().pipe(map((matches: Match[]) => matches.filter((match: Match) => !match.isLive)))),
+    );
+  }
+
+  getMatchAnalysis(matchId: string): Observable<AuraMatchAnalysis | undefined> {
+    const url = `${this.auraBaseUrl}/matches/analyze/${matchId}`;
+    return this.apiService.get<AuraMatchAnalysis>(url).pipe(
+      catchError(() => of(undefined)),
     );
   }
 
@@ -110,7 +151,7 @@ export class BetsApiService {
   }
 
   getEventDetails(eventId: string): Observable<BetsApiEventDetail | undefined> {
-    const url = `${environment.betsApiBaseUrl}/event/view`;
+    const url = `${this.apiBaseUrl}/event/view`;
     const params = { token: environment.betsApiToken, event_id: eventId };
     return this.apiService.get<BetsApiEventViewResponse>(url, params).pipe(
       map((response) => response.results?.[0]),

@@ -7,6 +7,7 @@ export const environment = {
   useMockData: false, // Mude para false para usar a API real
   betsApiBaseUrl: '/api',
   betsApiToken: '248558-x464EYT2kttm4b', // Seu token da API
+  auraApiBaseUrl: '/aura-api',
 };
 
 /*

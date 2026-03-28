@@ -7,5 +7,14 @@
       "^/api": ""
     },
     "logLevel": "debug"
+  },
+  "/aura-api": {
+    "target": "https://api.auradasorte.site",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/aura-api": ""
+    },
+    "logLevel": "debug"
   }
 }

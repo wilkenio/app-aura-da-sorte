@@ -27,6 +27,57 @@
       </div>
     </section>
 
+    <!-- Estatísticas ao Vivo -->
+    <section class="markets" *ngIf="vm.estatisticasVivas">
+      <h3>Estatísticas ao Vivo</h3>
+      <div class="live-stats">
+        <div class="stat-row">
+          <span class="stat-value home">{{ vm.estatisticasVivas.golsCasa }}</span>
+          <span class="stat-label">Gols</span>
+          <span class="stat-value away">{{ vm.estatisticasVivas.golsFora }}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-value home">{{ vm.estatisticasVivas.posseCasa }}%</span>
+          <span class="stat-label">Posse de Bola</span>
+          <span class="stat-value away">{{ vm.estatisticasVivas.posseFora }}%</span>
+        </div>
+        <div class="possession-bar">
+          <div class="possession-fill" [style.width.%]="vm.estatisticasVivas.posseCasa"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Probabilidades do Resultado -->
+    <section class="markets" *ngIf="vm.homeProbability || vm.drawProbability || vm.awayProbability">
+      <h3>Probabilidades</h3>
+      <div class="grid odds-main" *ngIf="vm.event">
+        <article>
+          <small>{{ vm.event.home?.name }}</small>
+          <strong>{{ vm.homeProbability | number: '1.1-1' }}%</strong>
+        </article>
+        <article>
+          <small>Empate</small>
+          <strong>{{ vm.drawProbability | number: '1.1-1' }}%</strong>
+        </article>
+        <article>
+          <small>{{ vm.event.away?.name }}</small>
+          <strong>{{ vm.awayProbability | number: '1.1-1' }}%</strong>
+        </article>
+      </div>
+
+      <div class="grid extras" *ngIf="vm.ambosMaramProb || vm.maisGolsProb">
+        <article>
+          <small>Ambos Marcam</small>
+          <strong>{{ vm.ambosMaramProb | number: '1.1-1' }}%</strong>
+        </article>
+        <article>
+          <small>Mais de {{ vm.maisGolsLinha }} gols</small>
+          <strong>{{ vm.maisGolsProb | number: '1.1-1' }}%</strong>
+        </article>
+      </div>
+    </section>
+
+    <!-- Odds do mercado -->
     <section class="markets">
       <h3>Resultado Final</h3>
       <div class="grid odds-main" *ngIf="vm.event">
@@ -65,6 +116,44 @@
       </div>
     </section>
 
+    <!-- Próximos Minutos -->
+    <section class="markets" *ngIf="vm.proximosMinutos">
+      <h3>Próximos Minutos</h3>
+      <div class="grid extras">
+        <article class="prediction-card">
+          <small>Gol (10 min)</small>
+          <strong [class.high]="vm.proximosMinutos.golProx10 >= 60">
+            {{ vm.proximosMinutos.golProx10 | number: '1.1-1' }}%
+          </strong>
+        </article>
+        <article class="prediction-card">
+          <small>Escanteio (5 min)</small>
+          <strong [class.high]="vm.proximosMinutos.escanteioProx5 >= 60">
+            {{ vm.proximosMinutos.escanteioProx5 | number: '1.1-1' }}%
+          </strong>
+        </article>
+        <article class="prediction-card">
+          <small>Cartão Amarelo (10 min)</small>
+          <strong [class.high]="vm.proximosMinutos.cartaoProx10 >= 60">
+            {{ vm.proximosMinutos.cartaoProx10 | number: '1.1-1' }}%
+          </strong>
+        </article>
+        <article class="prediction-card">
+          <small>Substituição (5 min)</small>
+          <strong [class.high]="vm.proximosMinutos.substituicaoProx5 >= 60">
+            {{ vm.proximosMinutos.substituicaoProx5 | number: '1.1-1' }}%
+          </strong>
+        </article>
+        <article class="prediction-card">
+          <small>Chute a Gol (3 min)</small>
+          <strong [class.high]="vm.proximosMinutos.chuteGolProx3 >= 60">
+            {{ vm.proximosMinutos.chuteGolProx3 | number: '1.1-1' }}%
+          </strong>
+        </article>
+      </div>
+    </section>
+
+    <!-- Card de IA -->
     <section class="ai-card">
       <header>
         <div>
@@ -77,6 +166,10 @@
       <h5>{{ vm.aiRecommendation }}</h5>
       <ion-progress-bar [value]="vm.aiProbability / 100"></ion-progress-bar>
 
+      <p *ngIf="vm.aiNarrative">
+        <ion-icon name="trending-up-outline"></ion-icon>
+        {{ vm.aiNarrative }}
+      </p>
       <p>
         <ion-icon name="trending-up-outline"></ion-icon>
         {{ vm.aiExplanation }}

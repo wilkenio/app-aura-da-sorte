@@ -171,6 +171,59 @@ article {
   }
 }
 
+.live-stats {
+  background: var(--color-card);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 14%, transparent);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.stat-row {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  margin-bottom: 10px;
+
+  .stat-label {
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 18px;
+    font-weight: 800;
+
+    &.home {
+      color: var(--color-success);
+      text-align: left;
+    }
+
+    &.away {
+      color: var(--color-text-primary);
+      text-align: right;
+    }
+  }
+}
+
+.possession-bar {
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  border-radius: 999px;
+  height: 7px;
+  overflow: hidden;
+
+  .possession-fill {
+    background: var(--color-success);
+    border-radius: 999px;
+    height: 100%;
+    transition: width 0.4s ease;
+  }
+}
+
+.prediction-card strong.high {
+  color: var(--color-accent);
+}
+
 .empty-state {
   padding: 30px 16px;
   text-align: center;
